@@ -7,7 +7,7 @@
 
 _start:
   b _blink // comment out to get a print loop instead
-  b _print
+  b _print // FIXME: this doesn't work yet... :/
 
 _blink:
   movl x10, 0xff634458 // GPIO2 EN
@@ -22,7 +22,7 @@ _bloop:
   b _bloop
 
 _print:
-  movl x8,  0xFFD24000
+  movl x8,  0xFFD24000 // UART0, UART1 @FFD23000, UART2 @FFD22000
   mov  w13, 0x42
 _ploop:
   str w13, [x8]
