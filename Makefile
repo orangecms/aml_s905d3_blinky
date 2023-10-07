@@ -19,7 +19,7 @@ dis: all
 	aarch64-linux-gnu-objdump -D blinky
 
 img: all
-	$(MKIMAGE) -T amlimage -n gxl -d $(BIN) $(IMG)
+	$(MKIMAGE) -T amlimage -n sm1 -d $(BIN) $(IMG)
 
 run: img
 	echo TODO
