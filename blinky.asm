@@ -12,7 +12,7 @@ _start:
 _blink:
   movl x10, 0xff634458 // GPIO2 EN
   movl x11, 0xff63445C // GPIO2 OUT
-  movl w12, 0x3fffffff
+  movl w12, 0xffffff37
   str w12, [x10]
 _bloop:
   movl w12, 0xffffff37
