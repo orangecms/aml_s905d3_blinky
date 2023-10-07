@@ -3,6 +3,7 @@ AS := $(CROSS_COMPILE)as
 OBJCOPY := $(CROSS_COMPILE)objcopy
 OBJDUMP := $(CROSS_COMPILE)objdump
 MKIMAGE := mkimage-aml
+UPDATE := update
 
 ASM := blinky.asm
 ELF := blinky.elf
@@ -34,5 +35,7 @@ run: img
 	@echo ""
 	@echo "    run \"update write $(IMG) $(ADDR); update run $(ADDR)\""
 	@echo ""
+	$(UPDATE) write $(IMG) $(ADDR)
+	$(UPDATE) run $(ADDR)
 	# aml_boot write $(ADDR) $(IMG)
 	# aml_boot exec $(ADDR)
