@@ -1,41 +1,35 @@
 CROSS_COMPILE := aarch64-linux-gnu-
-AS := $(CROSS_COMPILE)as
 OBJCOPY := $(CROSS_COMPILE)objcopy
 OBJDUMP := $(CROSS_COMPILE)objdump
 MKIMAGE := mkimage-aml
 UPDATE := update
 
-ASM := blinky.asm
-ELF := blinky.elf
+ELF := target/aarch64-unknown-none/release/blinky-rs
 BIN := blinky.bin
 IMG := blinky.aml
 
+# SRAM base address
 ADDR := 0xfffa0000
 
 all: elf bin
 
 elf:
-	$(AS) -o $(ELF) $(ASM)
+	cargo build --release
 
 bin:
 	$(OBJCOPY) $(ELF) --strip-all -O binary $(BIN)
 
 clean:
-	rm -f $(ELF) $(BIN) $(IMG)
+	cargo clean
+	rm -f $(BIN) $(IMG)
 
 dis: all
-	$(OBJDUMP) -D blinky
+	$(OBJDUMP) -D $(ELF)
 
 img: all
 	$(MKIMAGE) -T amlimage -n sm1 -d $(BIN) $(IMG)
 
 run: img
-	@echo ""
-	@echo "TODO: implement in \`aml_boot\`; use \`update\` or \`pyamlboot\` for now"
-	@echo ""
-	@echo "    run \"update write $(IMG) $(ADDR); update run $(ADDR)\""
-	@echo ""
-	$(UPDATE) write $(IMG) $(ADDR)
-	$(UPDATE) run $(ADDR)
-	# aml_boot write $(ADDR) $(IMG)
+	aml_boot run $(IMG)
+	# aml_boot write $(IMG) $(ADDR)
 	# aml_boot exec $(ADDR)
